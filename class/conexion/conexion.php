@@ -11,13 +11,11 @@ class Conexion {
 
     public function __construct(){
         $datos = $this->datosConection();
-        foreach($datos as $dato=>$valor){
-            $this->host = $valor['host'];
-            $this->user = $valor['user'];
-            $this->password = $valor['password'];
-            $this->dbname = $valor['dbname'];
-            $this->port = $valor['port'];
-        }
+        $this->host = $datos['conexion']['server'];
+        $this->user = $datos['conexion']['user'];
+        $this->password = $datos['conexion']['password'];
+        $this->dbname = $datos['conexion']['database'];
+        $this->port = $datos['conexion']['port'];
 
         $this->conexion = pg_connect("host=$this->host port=$this->port dbname=$this->dbname user=$this->user password=$this->password");
         if (!$this->conexion) {
@@ -27,7 +25,7 @@ class Conexion {
 
     private function datosConection(){ 
         $direccion = dirname(__FILE__);
-        $jsonDatos = file_get_contents($direccion."/"."config");
+        $jsonDatos = file_get_contents($direccion."/config");
         return json_decode($jsonDatos, true);
     }
 
